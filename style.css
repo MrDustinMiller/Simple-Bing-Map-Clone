@@ -1,0 +1,64 @@
+
+.textArea
+{
+    position: absolute;
+    z-index: 10;
+    opacity: 0.9;
+    top: 65px;
+    
+}
+
+.poiList
+{
+    position: absolute;
+    z-index: 10;
+}
+.polygonButtons
+{
+    position: absolute;
+    z-index: 10;
+    top: 25px;
+}
+
+.directionPrintout 
+{
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff;
+    opacity: 0.8;
+    left: 1200px;
+    width: 29.8vw;
+    
+}
+
+.directionButton 
+{
+    width: 100px;
+    cursor: pointer;
+    
+}
+
+.deleteDirectionButton 
+{
+    width: 100px;
+    cursor: pointer;
+}
+
+.deleteButton
+{
+    width: 100px;
+    cursor: pointer;
+}
+
+.drawButton
+{
+    
+    cursor: pointer;
+}
+
+.submitButton 
+{
+    
+    cursor: pointer;
+}
+
