@@ -84,7 +84,7 @@ function queryApi() {
        })
        .catch(error => {
         //if we could not fullfill our request, display an error message
-        alert(error);
+        console.log(error);
     });           
     
 
@@ -248,7 +248,7 @@ function GetDirections() {
 function GetPinDirections(poiLat) { 
 
     //alert user to tell them how to close their directions/route
-    alert('Click "Close Directions" to delete your route')
+    console.log('Click "Close Directions" to delete your route')
 
     //Load the directions module.
     Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
