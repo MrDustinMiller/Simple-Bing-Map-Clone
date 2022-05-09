@@ -59,7 +59,7 @@ function UpdateMapUserLoc() {
     map.entities.push(pin);
 }//end function
 
-function queryApi() {
+function QueryApi() {
     //bing map key
     const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL';
 
