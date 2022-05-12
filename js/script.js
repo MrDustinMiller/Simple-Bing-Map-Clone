@@ -97,7 +97,6 @@ function QueryApi() {
         console.log(error);
     });           
     
-
 }//end function
 
 function GetPoiData() {
