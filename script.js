@@ -3,10 +3,12 @@ var map;
 var lat; 
 var lon;
 var currentShape;
+var polyonCoords;
 
 function loadMapScenario() {
    //loads the map to the html element (to be displayed on screen)
    map = new Microsoft.Maps.Map(document.getElementById('myMap'), {});     
+   
 }//end function
 
 function GeoLocate() {
@@ -59,15 +61,23 @@ function UpdateMapUserLoc() {
     map.entities.push(pin);
 }//end function
 
-function queryApi() {
+function QueryApi() {
     //bing map key
     const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL';
 
     //gets the POI choice out of the text field element so we can use it for the POI search in the url we will query data from
     POIoption = document.getElementById("PointsOfInterest").value;
-      
+
+    //append all of our details for our API url
+    bingUrl = 'https://dev.virtualearth.net/';
+    restAPI = 'REST/v1/';
+    searchAPI = 'LocalSearch/'
+    query = '?query=' + POIoption;
+    userLocation = '&userLocation=' + lat + ',' + lon;
+    bingKey = '&key=' + key;
+
     //the api url to query for data for a specific POI (from the text field) based around the users current location
-    queryUrl = 'https://dev.virtualearth.net/REST/v1/LocalSearch/?query=' + POIoption + '&userLocation=' + lat + ',' + lon + '&key=' + key;
+    queryUrl = bingUrl + restAPI + searchAPI + query + userLocation + bingKey;
 
     //fetch the response data from the url request, returns in text format
     //fetchs the data (from the url) and gives us a promise back
@@ -84,7 +94,7 @@ function queryApi() {
        })
        .catch(error => {
         //if we could not fullfill our request, display an error message
-        alert(error);
+        console.log(error);
     });           
     
 
@@ -205,7 +215,9 @@ function DrawPolygon() {
     });  
     
     //Create a new polygon.
-    tools.create(Microsoft.Maps.DrawingTools.ShapeType.polygon, function (shape) {});
+    tools.create(Microsoft.Maps.DrawingTools.ShapeType.polygon, function (shape) {
+        currentShape = shape
+    });
 
     //add our shape to the map
     map.entities.push(shape);
@@ -216,7 +228,10 @@ function DrawPolygon() {
     //disposes the instance of the drawing tools class
     tools.dispose(Microsoft.Maps.DrawingTools.ShapeType.polygon)
     });
-    
+
+    //retrieves the lat and lon from each point of the polygon
+    polygonCoords = currentShape.getLocations();
+   
 }//end function
 
 function GetDirections() {
@@ -239,16 +254,14 @@ function GetDirections() {
         document.getElementById('closeDirections').addEventListener("click", function () {
         directionsManager.dispose();
     })
-    });
-
-    
+    }); 
 
 }//end function
 
 function GetPinDirections(poiLat) { 
 
     //alert user to tell them how to close their directions/route
-    alert('Click "Close Directions" to delete your route')
+    console.log('Click "Close Directions" to delete your route')
 
     //Load the directions module.
     Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
