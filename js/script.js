@@ -1,11 +1,14 @@
-//global variables for our map instance and our lat and lon values
+//global variables 
 var map;
-var lat; 
-var lon;
+var userLat; 
+var userLon;
 var currentShape;
 var polyonCoords;
+var directionsManager;
+var route = false;
+const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL';
 
-function loadMapScenario() {
+function LoadMapScenario() {
    //loads the map to the html element (to be displayed on screen)
    map = new Microsoft.Maps.Map(document.getElementById('myMap'), {});     
    
@@ -24,12 +27,12 @@ function GetUserLoc(position) {
     //set the devices location to the lat and lon variables
     //the geoLocationPosition instance contains the coords property, 
     //the coords prop. contains a GeoLocationCoordnates object instance (inside is lat and lon properties)
-    lat = position.coords.latitude;
-    lon = position.coords.longitude;
+    userLat = position.coords.latitude;
+    userLon = position.coords.longitude;
 
     //store the lat and lon values into html element
-    document.getElementById('lattitude').value = lat;
-    document.getElementById('longitude').value = lon;
+    document.getElementById('lattitude').value = userLat;
+    document.getElementById('longitude').value = userLon;
 
     //call function
     UpdateMapUserLoc();
@@ -42,7 +45,7 @@ function UpdateMapUserLoc() {
         //specify the type of map style that should be displayed (aerial)
         mapTypeID: Microsoft.Maps.MapTypeId.aerial,
         //set center of the map to given location (devices current location)
-        center: new Microsoft.Maps.Location(lat, lon),
+        center: new Microsoft.Maps.Location(userLat, userLon),
         //controls how zoomed in the map will be
         zoom: 16,   
     });
@@ -62,9 +65,7 @@ function UpdateMapUserLoc() {
 }//end function
 
 function QueryApi() {
-    //bing map key
-    const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL';
-
+    
     //gets the POI choice out of the text field element so we can use it for the POI search in the url we will query data from
     POIoption = document.getElementById("PointsOfInterest").value;
 
@@ -73,7 +74,7 @@ function QueryApi() {
     restAPI = 'REST/v1/';
     searchAPI = 'LocalSearch/'
     query = '?query=' + POIoption;
-    userLocation = '&userLocation=' + lat + ',' + lon;
+    userLocation = '&userLocation=' + userLat + ',' + userLon;
     bingKey = '&key=' + key;
 
     //the api url to query for data for a specific POI (from the text field) based around the users current location
@@ -206,7 +207,7 @@ function DrawPolygon() {
 
     let tools;
     let shape;
-    
+
     //Load the DrawingTools module.
     Microsoft.Maps.loadModule('Microsoft.Maps.DrawingTools', function () {
         //Create an instance of the DrawingTools class and bind it to the map.
@@ -219,8 +220,15 @@ function DrawPolygon() {
     });
 
     //add our shape to the map
-    map.entities.push(shape);
+    map.entities.push(shape); 
 
+    //add a click event to the filer polygon button
+    document.getElementById('filterPolygon').addEventListener("click", function() {
+        //call function
+       FilterByPolygon(currentShape)
+       
+    })
+ 
     //add a click event to the delete polygon button
     document.getElementById('deletePolygon').addEventListener("click", function() {
 
@@ -228,39 +236,15 @@ function DrawPolygon() {
     tools.dispose(Microsoft.Maps.DrawingTools.ShapeType.polygon)
     });
 
-    //retrieves the lat and lon from each point of the polygon
-    polygonCoords = currentShape.getLocations();
-   
-}//end function
-
-function GetDirections() {
-    //load the directions module
-    Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {  
-
-        //responsible for calculating directions and displaying a route on the instance of the map
-        //Create an instance of the directions manager.
-        var directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map); 
-
-        //print out to html element
-        directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('printoutPanel') });
-
-        //Displays an input panel for calculating directions in the specified container.
-        directionsManager.showInputPanel('directionContainer');
-
-        //remove the 'Your location' pin from the map because the direction module will place its own when displaying direction routes
-        map.entities.remove(pin);
-
-        document.getElementById('closeDirections').addEventListener("click", function () {
-        directionsManager.dispose();
-    })
-    }); 
-
 }//end function
 
 function GetPinDirections(poiLat) { 
 
-    //alert user to tell them how to close their directions/route
-    console.log('Click "Close Directions" to delete your route')
+    //each time a pin is clicked we will make a new instance of our direction manager class. we can check if this has happened with our route boolean
+    //if true, we have a direction manager instance and a route on the map. We clear those out, and continue making a new route for each newly clicked pin.
+    if (route == true) {
+        directionsManager.clearAll();
+    }
 
     //Load the directions module.
     Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
@@ -269,7 +253,7 @@ function GetPinDirections(poiLat) {
     directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
 
     //add a new waypoint that is the users current location
-    var userCurrentLoc = new Microsoft.Maps.Directions.Waypoint({ address:'Your location' , location: new Microsoft.Maps.Location(lat, lon) });
+    var userCurrentLoc = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(userLat, userLon) });
     directionsManager.addWaypoint(userCurrentLoc);
 
     //add a new waypoint that is the lat/lon of the clicked pin (poi).
@@ -277,25 +261,25 @@ function GetPinDirections(poiLat) {
     directionsManager.addWaypoint(pinLocation);
 
     //Sets the specified render options for the route to specified html element
-    directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('printoutPanel') });
-
-    //Displays an input panel for calculating directions in the specified container.
-    directionsManager.showInputPanel('directionContainer');  
+    directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('printoutPanel') });  
 
     //calculate directions 
     directionsManager.calculateDirections();
 
+    });//end load directions module
+    
+    //update our boolean variable
+    route =  true;
+
     //adds a click event to the close direction button and clears the display/routes from the directions module that we loaded
     document.getElementById('closeDirections').addEventListener("click", function () {
-        directionsManager.dispose();
+        directionsManager.clearAll();
                 map.setView({
             //return the view of the center of the map (once the directions have been closed) to the users location
-            center: new Microsoft.Maps.Location(lat, lon),
+            center: new Microsoft.Maps.Location(userLat, userLon),
             //adjusts how zoomed into the map we are
             zoom: 13,
         })
     });//end function
 
-    });//end load directions module
-    
 }//end function
