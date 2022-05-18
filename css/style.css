@@ -1,5 +1,5 @@
 
-.textArea
+.textArea 
 {
     position: absolute;
     z-index: 10;
@@ -8,7 +8,7 @@
     
 }
 
-.poiList
+.poiList 
 {
     position: absolute;
     z-index: 10;
@@ -31,34 +31,16 @@
     
 }
 
-.directionButton 
+.filterPolygonButton, .deleteDirectionButton, .deleteButton 
 {
     width: 100px;
     cursor: pointer;
     
 }
 
-.deleteDirectionButton 
+.drawButton, .submitButton
 {
-    width: 100px;
     cursor: pointer;
 }
 
-.deleteButton
-{
-    width: 100px;
-    cursor: pointer;
-}
-
-.drawButton
-{
-    
-    cursor: pointer;
-}
-
-.submitButton 
-{
-    
-    cursor: pointer;
-}
 
