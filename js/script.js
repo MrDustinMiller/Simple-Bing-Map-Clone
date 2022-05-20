@@ -5,6 +5,10 @@ var userLon;
 var currentShape;
 var polyonCoords;
 var directionsManager;
+var resourceSet;
+var poiLat;
+var poiLon;
+var poiName;
 var route = false;
 const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL';
 
@@ -29,10 +33,6 @@ function GetUserLoc(position) {
     //the coords prop. contains a GeoLocationCoordnates object instance (inside is lat and lon properties)
     userLat = position.coords.latitude;
     userLon = position.coords.longitude;
-
-    //store the lat and lon values into html element
-    document.getElementById('lattitude').value = userLat;
-    document.getElementById('longitude').value = userLon;
 
     //call function
     UpdateMapUserLoc();
@@ -103,15 +103,11 @@ function QueryApi() {
 function GetPoiData() {
     
     //declare variables for POI
-    let poiName = [];
     let poiAddress = [];
     let poiPhoneNumber = [];
     let pointsOfInterest = [];
     let poiGeocodePoints = [];
     let poiCoordinates = [];
-    let resourceSet = [];
-    let poiLat = [];
-    let poiLon = [];
    
     //give the variable the properties of resources inside the json data
     resourceSet = jsonData.resourceSets[0].resources;
@@ -119,57 +115,61 @@ function GetPoiData() {
     //for loop to run through the variable resourceSet (from the json object)
     for (let i=0;  i < resourceSet.length; i++) {
 
-        //grabs the name of each POI from the json data
         poiName = resourceSet[i].name;
-        //grabs the formatted address of each POI from the json data
         poiAddress = resourceSet[i].Address.formattedAddress;
-        //grabs the phone number of each POI from the json data
         poiPhoneNumber = resourceSet[i].PhoneNumber;
-        //grab the geocodepoints of each POI from the json data
         poiGeocodePoints = resourceSet[i].geocodePoints[0];
-        //from geocodepoints we get the coordinates from the POI from the json data
         poiCoordinates = poiGeocodePoints.coordinates;
-        //from the coordinates we get the lat and lon for each POI
         poiLat = poiCoordinates[0];
         poiLon = poiCoordinates[1];
 
         //combining all three properties of the POI's into one variable
-        pointsOfInterest[i] = poiName + ' ' + poiAddress + ' ' + poiPhoneNumber + '\n';
+        pointsOfInterest[i] = poiName;
+
+        SetPushpins(poiLat, poiLon, poiName)
         
-        //on the map instance we use the setView method to change the view of the map based on given settings
-        map.setView({
+    }//end for 
+
+    DisplayResults(resourceSet);
+   
+}//end function
+
+function SetPushpins() {
+    //on the map instance we use the setView method to change the view of the map based on given settings
+    map.setView({
         mapTypeID: Microsoft.Maps.MapTypeId.aerial,
         //this determines the location of the pushpin
         center: new Microsoft.Maps.Location(poiLat, poiLon),
         zoom: 13,   
-        });
+    });
 
-        //returns the location of the center of the current map view (in the setView method)
-        let center = map.getCenter();
+    //returns the location of the center of the current map view (in the setView method)
+    let center = map.getCenter();
 
-        //access the pushpin class and pass in the center of the map view as arg (so pin is set to that location)
-        pin = new Microsoft.Maps.Pushpin(center, {
+    //access the pushpin class and pass in the center of the map view as arg (so pin is set to that location)
+    pin = new Microsoft.Maps.Pushpin(center, {
         title: poiName,
         color: 'green',
         enableHoverStyle: true
-        });
+    });
 
-        //Add the pushpin to the map
-        map.entities.push(pin);
-        
-        //Add a click event handler to each of the pushpins (calls the pin directions function).
-        Microsoft.Maps.Events.addHandler(pin, 'click', GetPinDirections);
-    }//end for 
-    
-    //call function
+    //Add the pushpin to the map
+    map.entities.push(pin);
     RemovePushpin();
-  
-    //for loop to go through each poi 
-    for (let i=0;  i < pointsOfInterest.length; i++) {
-        //display each poi with their properties to the html element
-        document.getElementById("PoiList").innerHTML = pointsOfInterest;
+    //Add a click event handler to each of the pushpins (calls the pin directions function).
+    Microsoft.Maps.Events.addHandler(pin, 'click', GetPinDirections);
+
+}//end function
+
+function DisplayResults() {
+
+    for (let i = 0; i < resourceSet.length; i++) {
+        //display our results in a list inside the text area
+        var li = document.createElement('li');
+        li.innerHTML = resourceSet[i].name;  
+        document.getElementById('resultsList').appendChild(li);   
     }//end for
-        
+
 }//end function
 
 function RemovePushpin() {
@@ -187,14 +187,16 @@ function RemovePushpin() {
            //decrementing for loop to get the length of the entities in the map instance (the poi pins)
            for (let i = map.entities.getLength(); i >= 0; i--) {
                //give variable the value of # of pins on the map
-               let pushpin = map.entities.get(i);
+               let pin = map.entities.get(i);
                //if the pushpins belong to the pushpin class for our map instance
-               if (pushpin instanceof Microsoft.Maps.Pushpin) {
+               if (pin instanceof Microsoft.Maps.Pushpin) {
                //delete the pushpins if above conditions are true
-               map.entities.removeAt(i);           
+               map.entities.removeAt(i);   
+               //when poi option is removed remove its display data along with it
+               document.getElementById('resultsList').innerHTML = ""        
            }//end if
+           
        }//end for
-
        //if backspace was pressed, return to the users lat/lon after deleting the pushpins
        UpdateMapUserLoc();
     }//end if
@@ -244,7 +246,7 @@ function GetPinDirections(poiLat) {
     //if true, we have a direction manager instance and a route on the map. We clear those out, and continue making a new route for each newly clicked pin.
     if (route == true) {
         directionsManager.clearAll();
-    }
+    }//end if
 
     //Load the directions module.
     Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
@@ -271,15 +273,18 @@ function GetPinDirections(poiLat) {
     //update our boolean variable
     route =  true;
 
-    //adds a click event to the close direction button and clears the display/routes from the directions module that we loaded
-    document.getElementById('closeDirections').addEventListener("click", function () {
+}//end function
+
+function CloseDirections() {
+
         directionsManager.clearAll();
-                map.setView({
-            //return the view of the center of the map (once the directions have been closed) to the users location
-            center: new Microsoft.Maps.Location(userLat, userLon),
-            //adjusts how zoomed into the map we are
-            zoom: 13,
+        document.getElementById('resultsList').innerHTML = ""
+
+        map.setView({
+        //return the view of the center of the map (once the directions have been closed) to the users location
+        center: new Microsoft.Maps.Location(userLat, userLon),
+        //adjusts how zoomed into the map we are
+        zoom: 13,
         })
-    });//end function
 
 }//end function
