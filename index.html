@@ -15,8 +15,8 @@
         
         <!--Div area to load our map onto the screen-->
         <div
-            id='myMap' style='width: 100vw; height: 100vh;'>
-            
+            id='myMap'>
+        
             <!--Search bar with drop down menu with POIS-->
             <div class="poiList">
                     <input type="text" placeholder="Search..." list="POI" id="PointsOfInterest">
@@ -48,18 +48,20 @@
                 <button type="button" class="drawButton" id="DrawPolygon" onclick="DrawPolygon()" >Draw Polygon <br/> 'Double Click'</button>
                 <button type="button" class="deleteButton" id="deletePolygon">Delete Polygon</button>
                 <button type="button" class="filterPolygonButton" id="filterPolygon">Search With Polygon</button>
-                <button type="button" class="deleteDirectionButton" id="closeDirections">Close Directions</button>
+                <button type="button" class="deleteDirectionButton" id="closeDirections" onclick="CloseDirections()">Close Directions</button>
             </div>  
         
             <!--Text Area for our data to go into--->
             <div class="textArea">
-                <textarea disabled id="PoiList" style="font-weight: bold" rows="4" cols="53"></textarea>
+                <p>Results</p>    
+                <ul id="resultsList"></ul>         
             </div>
 
           
                 
                 <!--Div area for our directions to be outputted-->
                 <div class="directionPrintout">
+                    <p>Directions</p>
                     <div id='directionContainer'></div>
                     <div id='printoutPanel'></div>
                 </div>
