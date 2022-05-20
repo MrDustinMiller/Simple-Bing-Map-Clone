@@ -2,10 +2,14 @@
 .textArea 
 {
     position: absolute;
-    z-index: 10;
-    opacity: 0.9;
-    top: 65px;
-    
+    bottom: 0px;
+    left: 1175px;
+    height: 50vh;
+    width: 29.7vw;
+    background-color: #dcdcdc92;
+    overflow: scroll;
+    font-size: larger;
+
 }
 
 .poiList 
@@ -13,6 +17,7 @@
     position: absolute;
     z-index: 10;
 }
+
 .polygonButtons
 {
     position: absolute;
@@ -24,11 +29,26 @@
 {
     position: relative;
     z-index: 10;
-    background-color: #ffffff;
-    opacity: 0.8;
-    left: 1200px;
-    width: 29.8vw;
+    background-color: #dcdcdc92;
+    left: 1174px;
+    height: 50vh;
+    width: 29.7vw;
+    overflow: scroll;
     
+}
+
+#directionContainer{
+    width: 10vw;
+}
+
+.poiPrintout {
+    position: relative;
+    z-index: 10;
+    background-color: #9c0c0c;
+    left: 1100px;
+    height: 50vh;
+    width: 29.8vw;
+    overflow: scroll;
 }
 
 .filterPolygonButton, .deleteDirectionButton, .deleteButton 
@@ -42,5 +62,11 @@
 {
     cursor: pointer;
 }
+
+#myMap {
+    width: 68.9vw; 
+    height: 100vh;
+}
+
 
 
