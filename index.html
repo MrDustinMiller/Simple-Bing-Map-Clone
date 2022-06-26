@@ -1,76 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"></html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="icon" type="image/jpg" href="images/favicon.jpg">
-        <link rel="stylesheet" href="css/style.css">
-        <!--Title in tab menu-->
-        <title>Maps</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <!--Title in tab menu-->
+    <title>Maps</title>
+</head>
+<body onload='LoadMapScenario(), GeoLocate();'>
+    <!--Elements to store lat and lon values from JS-->
+    <p id = "lattitude"></p>
+    <p id = "longitude"></p>
+   
+        
+    <!--Div area to load our map onto the screen-->
+    <div
+        id='myMap' style='width: 100vw; height: 100vh;'>
+        <!--Search bar with drop down menu with POIS-->
+        <div class="poiList">
+            <form>
+                <input type="text" placeholder="Search..." list="POI" id="PointsOfInterest">
+                <datalist id="POI">
+                    <option value="Restaurant">
+                    <option value="School">
+                    <option value="Gas Station">
+                    <option value="Coffee Shop">
+                    <option value="Hotel">
+                    <option value="ATM">
+                    <option value="Auto Dealership">
+                    <option value="Cinema">
+                    <option value="Fast Food">
+                    <option value="Grocery Store">
+                    <option value="Museum">
+                    <option value="Park">
+                    <option value="Bank">
+                    <option value="Pharmacy">
+                    <option value="Police Station">
+                    <option value="Post Office">
+                    <option value="Nightlife">
+                    </datalist>
+                    <button type="button" class="submitButton" id="submit" onclick="QueryApi()">Sumbit</button>
+              </form>
+        </div>
 
-    <body onload='LoadMapScenario(), GeoLocate();'>
-        
-        <!--Div area to load our map onto the screen-->
-        <div
-            id='myMap'>
-        
-            <!--Search bar with drop down menu with POIS-->
-            <div class="poiList">
-                    <input type="text" placeholder="Search..." list="POI" id="PointsOfInterest">
-                        <datalist id="POI">
-                            <option value="Restaurant">
-                            <option value="School">
-                            <option value="Gas Station">
-                            <option value="Coffee Shop">
-                            <option value="Hotel">
-                            <option value="ATM">
-                            <option value="Auto Dealership">
-                            <option value="Cinema">
-                            <option value="Fast Food">
-                            <option value="Grocery Store">
-                            <option value="Museum">
-                            <option value="Park">
-                            <option value="Bank">
-                            <option value="Pharmacy">
-                            <option value="Police Station">
-                            <option value="Post Office">
-                            <option value="Nightlife">
-                        </datalist>
-                        <button type="button" class="submitButton" id="submit" onclick="QueryApi()">Sumbit</button>     
+         <!---buttons-->
+        <div class="polygonButtons">
+            <!-- <button type="button" class="drawButton" id="DrawPolygon" onclick="DrawPolygon()" >Draw Polygon <br/> 'Double Click'</button> -->
+            <!-- <button type="button" class="deleteButton" id="deletePolygon">Delete Polygon</button> -->
+            <!-- <button type="button" class="directionButton" id="getDirections" onclick="GetDirections()">Get Directions</button> -->
+            <button type="button" class="deleteDirectionButton" id="closeDirections" onclick="CloseDirections()">Close Directions</button>
+        </div>  
+
+        <!--Div area for our directions to be outputted-->
+        <div class="directionPrintout">
+            <div id='directionContainer'>
+                <div id='printoutPanel'></div>
             </div>
-
-
-            <!---buttons-->
-            <div class="polygonButtons">
-                <button type="button" class="drawButton" id="DrawPolygon" onclick="DrawPolygon()" >Draw Polygon <br/> 'Double Click'</button>
-                <button type="button" class="deleteButton" id="deletePolygon">Delete Polygon</button>
-                <button type="button" class="filterPolygonButton" id="filterPolygon">Search With Polygon</button>
-                <button type="button" class="deleteDirectionButton" id="closeDirections" onclick="CloseDirections()">Close Directions</button>
-            </div>  
-        
-            <!--Text Area for our data to go into--->
-            <div class="textArea">
+             <!--Text Area for our data to go into--->
+             <div class="textArea">
                 <p>Results</p>    
                 <ul id="resultsList"></ul>         
             </div>
-
-          
-                
-                <!--Div area for our directions to be outputted-->
-                <div class="directionPrintout">
-                    <p>Directions</p>
-                    <div id='directionContainer'></div>
-                    <div id='printoutPanel'></div>
-                </div>
-          
+            
         </div>
+
+    </div>
     
     <!--Scripts-->
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL'></script>
     <script type="text/javascript" src="js/script.js"></script>
     
-    </body>
+</body>
 </html>

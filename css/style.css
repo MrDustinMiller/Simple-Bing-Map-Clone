@@ -1,23 +1,16 @@
 
-.textArea 
+.textArea
 {
     position: absolute;
-    bottom: 0px;
-    left: 1175px;
-    height: 50vh;
-    width: 29.7vw;
-    background-color: #dcdcdc92;
-    overflow: scroll;
-    font-size: larger;
-
+    z-index: 10;
+    opacity: 0.9;   
 }
 
-.poiList 
+.poiList
 {
     position: absolute;
     z-index: 10;
 }
-
 .polygonButtons
 {
     position: absolute;
@@ -29,44 +22,39 @@
 {
     position: relative;
     z-index: 10;
-    background-color: #dcdcdc92;
-    left: 1174px;
-    height: 50vh;
-    width: 29.7vw;
+    background-color: #ececec;
+    opacity: 0.8;
+    width: 29vw;
+    height: 100vh;
     overflow: scroll;
-    
+    float: right;
 }
 
-#directionContainer{
-    width: 10vw;
+#directionContainer {
+    float:inherit;
+    min-height: 20vh;
 }
 
-.poiPrintout {
+.textArea {
     position: relative;
-    z-index: 10;
-    background-color: #9c0c0c;
-    left: 1100px;
-    height: 50vh;
-    width: 29.8vw;
-    overflow: scroll;
 }
 
-.filterPolygonButton, .deleteDirectionButton, .deleteButton 
+.directionButton 
 {
     width: 100px;
     cursor: pointer;
     
 }
 
-.drawButton, .submitButton
+.deleteDirectionButton 
 {
+    width: 100px;
     cursor: pointer;
 }
 
-#myMap {
-    width: 68.9vw; 
-    height: 100vh;
+
+.submitButton 
+{
+    
+    cursor: pointer;
 }
-
-
-
