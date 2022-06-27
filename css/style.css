@@ -1,11 +1,10 @@
 
 .textArea
 {
-    position: relative;
+    position: absolute;
     z-index: 10;
     opacity: 0.9;   
 }
-
 ul {
     margin: -1em;
 }
@@ -15,8 +14,7 @@ ul {
     position: absolute;
     z-index: 10;
 }
-
-.buttons
+.polygonButtons
 {
     position: absolute;
     z-index: 10;
@@ -40,14 +38,26 @@ ul {
     min-height: 20vh;
 }
 
+.textArea {
+    position: relative;
+}
+
+.directionButton 
+{
+    width: 100px;
+    cursor: pointer;
+    
+}
+
 .deleteDirectionButton 
 {
     width: 100px;
     cursor: pointer;
 }
 
+
 .submitButton 
 {
-    width: 100px;
+    
     cursor: pointer;
 }
