@@ -1,15 +1,15 @@
 //global variables 
-var map;
-var userLat; 
-var userLon;
-var currentShape;
-var polyonCoords;
-var directionsManager;
-var resourceSet;
-var poiLat;
-var poiLon;
-var poiName;
-var route = false;
+let map;
+let userLat; 
+let userLon;
+let currentShape;
+let polyonCoords;
+let directionsManager;
+let resourceSet;
+let poiLat;
+let poiLon;
+let poiName;
+let route = false;
 const key = 'AlWrmFsuKIg2hnt-aOJ2mxKL55NELQkSjjAA8rJoha03C5y6tBt9kKbvDn5cQ7QL'; 
 
 function LoadMapScenario() {
@@ -51,7 +51,7 @@ function GeoLocate() {
         });
     
         //returns the location of the center of the current map view (in the setView method)
-        var center = map.getCenter();
+        let center = map.getCenter();
     
         //access the pushpin class and pass in the center of the map view as arg (so pin is set to that location)
             pin = new Microsoft.Maps.Pushpin(center, {
@@ -165,7 +165,7 @@ function GeoLocate() {
     
         for (let i = 0; i < resourceSet.length; i++) {
             //display our results in a list inside the text area
-            var li = document.createElement('li');
+            let li = document.createElement('li');
             li.innerHTML = resourceSet[i].name;  
             document.getElementById('resultsList').appendChild(li);   
         }//end for
@@ -256,11 +256,11 @@ function GeoLocate() {
         directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
     
         //add a new waypoint that is the users current location
-        var userCurrentLoc = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(userLat, userLon) });
+        let userCurrentLoc = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(userLat, userLon) });
         directionsManager.addWaypoint(userCurrentLoc);
     
         //add a new waypoint that is the lat/lon of the clicked pin (poi).
-        var pinLocation = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(poiLat.location.latitude, poiLat.location.longitude) });
+        let pinLocation = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(poiLat.location.latitude, poiLat.location.longitude) });
         directionsManager.addWaypoint(pinLocation);
     
         //Sets the specified render options for the route to specified html element
