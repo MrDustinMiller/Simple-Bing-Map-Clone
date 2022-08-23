@@ -11,7 +11,7 @@ position on the map, and display directions from your current location.
 
 ## Screenshots
 
-![](media-player.png height="400" "Home Page")
+![](media-player.png "Home Page")
 
 <img src="media-player.png" height="250" width="250">
 
