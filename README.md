@@ -11,11 +11,7 @@ position on the map, and display directions from your current location.
 
 ## Screenshots
 
-![]()
-
-![]()
-
-![]()
+-[Screenshots & Presentation] (https://github.com/MrDustinMiller/Bing-Map-API/blob/master/BingAPI.pdf)
 
 ## Built With
 
