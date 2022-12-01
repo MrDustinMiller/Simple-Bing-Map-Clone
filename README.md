@@ -1,4 +1,4 @@
-<h1 align="center">Bing Map Clone</h1>
+<h1 align="left">Bing Map Clone</h1>
 
 <p align="center">- A map web application that can search for
 points of interests within your location, display results, display their
