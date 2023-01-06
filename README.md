@@ -13,6 +13,9 @@ position on the map, and display directions from your current location.
 
 - [Screenshots & Presentation](https://github.com/MrDustinMiller/Bing-Map-API/blob/master/BingAPI.pdf)
 
+## Live Demo
+-[Demo](https://mrdustinmiller.github.io/Simple-Bing-Map-Clone/)
+
 ## Built With
 
 - JavaScript
